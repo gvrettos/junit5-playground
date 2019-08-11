@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import testing.junit.MyCalculator;
 
@@ -19,20 +21,22 @@ class MyCalculatorTest {
 		myCalculator = new MyCalculator();
 	}
 
-	@Test
-	void testDivideDividendLargerThanDivisor() {
-		assertEquals(4, myCalculator.divide(100, 25));
-	}
-	
-	@Test
-	void testDivideDivisorLargerThanDividend() {
-		assertEquals(0, myCalculator.divide(25, 100));
-	}
-	
-	@Test
-	void testDivideDividendEqualToDivisor() {
-		assertEquals(1, myCalculator.divide(999, 999));
-	}
+	public static int[][] data() {
+        return new int[][] { 
+        	{ 100, 25, 4 }, 
+        	{ 25, 100, 0 }, 
+        	{ 999, 999, 1 } 
+        };
+    }
+
+    @ParameterizedTest
+    @MethodSource(value = "data")
+    void testDivideBasic(int[] data) {
+        int numerator = data[0];
+        int denominator = data[1];
+        int expected = data[2];
+        assertEquals(expected, myCalculator.divide(numerator, denominator));
+    }
 
 	@Test
 	void testDivideByZero() {
