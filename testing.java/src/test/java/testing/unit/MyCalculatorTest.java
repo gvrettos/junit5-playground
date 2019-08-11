@@ -1,6 +1,7 @@
 package testing.unit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,4 +32,9 @@ class MyCalculatorTest {
 		assertEquals(1, myCalculator.divide(999, 999));
 	}
 
+	@Test
+	void testDivideByZero() {
+		Throwable exception = assertThrows(ArithmeticException.class, () -> myCalculator.divide(999, 0));
+	    assertEquals("/ by zero", exception.getMessage());
+	}
 }
